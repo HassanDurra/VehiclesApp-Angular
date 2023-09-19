@@ -63,8 +63,21 @@ export class AddVehiclesComponent {
     this.inputData.splice(vehicleData , 1)
   }
   // Updating Function
-  updateData(vehicleData : number)
+  updateData(vehicleData : any)
   {
-    
+ 
+   let temp:any[] = this.inputData.filter(arr=> arr.id==vehicleData)
+   let UpdateName    = temp[0].Vehiclename;  
+   let UpdateOwner   = temp[0].Ownername;  
+   let UpdateDate    = temp[0].DateofDelivery;  
+   
+   //  this.display = true ;
+  
+  //  let name   = this.addVehiclesForm.controls.vehicleName.value;
+  //  let owner  = this.addVehiclesForm.controls.ownerName.value;
+  //  let Date   = this.addVehiclesForm.controls.DeliveryDate.value;
+  // temp.VehicleName  
+
+
   }
 }
