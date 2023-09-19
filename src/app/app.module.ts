@@ -7,19 +7,24 @@ import { AddVehiclesComponent } from './add-vehicles/add-vehicles.component';
 import { RouterModule } from '@angular/router';
 import { CssLinksComponent } from './css-links/css-links.component';
 import { LoginComponent } from './login/login.component';
-
+import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
+import {ReactiveFormsModule} from '@angular/forms'
 @NgModule({
   declarations: [
     AppComponent,
     AddVehiclesComponent,
     CssLinksComponent,
-    LoginComponent
+    LoginComponent,
+    NavigationBarComponent ,
+
   ],
   imports: [
+    ReactiveFormsModule,
     BrowserModule,
     RouterModule.forRoot([
     { path:'vehicles/create' , component: AddVehiclesComponent} ,
     { path:'login' , component: LoginComponent} ,
+
    ]),
   ],
   providers: [],

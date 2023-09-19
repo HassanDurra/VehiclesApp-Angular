@@ -1,1 +1,53 @@
-<p>add-vehicles works!</p>
+<div class="table-container">
+  <!-- Model for vehicles adding -->
+  <div class="model-container" *ngIf="display" id="addingDataForm">
+    <div class="form-container" >
+      <div class="button-close"><button class="closeBtn" (click)="Closebutton()">X</button></div>
+      <div class="heading-text">
+        <h3 style="padding:10px; text-align:center;color:white">Insert Information About Vehicle</h3>
+      </div>
+      <form [formGroup]="addVehiclesForm" (ngSubmit)="onsubmit()" >
+        <input type="file" (change)="onImageChange($event)" formControlName="vehicleImage" class="input-style" id="">
+        <input type="text" formControlName="vehicleName" class="input-style" placeholder="Insert Vehicle Name">
+        <input type="text" formControlName="ownerName" class="input-style" placeholder="Insert Owner Name">
+        <input type="date" formControlName="DeliveryDate" id="" class="input-style">
+        <button type="submit" class="input-button">Add Vehicles Data</button>
+      </form>
+    </div>
+  </div>
+  <!--table start  -->
+<div class="table-main-container">
+
+  <div class="top-section">
+    <span><h3>Vehicles Management</h3></span>
+    <span><Button (click)="openForm()">Create</Button></span>
+  </div>
+  <div class="table-responsive-section">
+    <table>
+      <thead>
+      <th>Sr.no</th>
+      <th>Car Image</th>
+      <th>Name</th>
+      <th>Customer name</th>
+      <th>Date of Delivery</th>
+      <th>Action</th>
+     </thead>
+     <!-- Table data -->
+     <tbody>
+      <tr *ngFor="let vehicleData of inputData ; let id = index">
+        <td>{{vehicleData.id}}</td>
+        <td><img [src]="vehicleData.Vehicleimage" style="width:80px ; height:30px; object-fit:contain;" alt=""></td>
+        <td>{{ vehicleData.Vehiclename }}</td>
+        <td>{{ vehicleData.Ownername }}</td>
+        <td>{{ vehicleData.DateofDelivery }}</td>
+        <td><button class=" btn deleteButton" (click)="removeData(id)">Delete</button> <span style="color:grey"> | </span> <button class=" btn updateButton" (click)="updateData(id)">Update</button></td>
+      </tr>
+      
+     </tbody>
+     <!-- End of table data -->
+    </table>
+  </div>
+
+</div>
+<!-- end of table -->
+</div>
