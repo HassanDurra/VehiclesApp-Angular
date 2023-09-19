@@ -46,6 +46,7 @@ export class AddVehiclesComponent {
     this.inputData.push(allData);
     this.counter ++ ;
     this.display = this.display = false;
+    this.addVehiclesForm.reset();
   }
   // Create Button To open Model
   openForm()
@@ -56,6 +57,7 @@ export class AddVehiclesComponent {
   Closebutton()
   {
     this.display = this.display = false;
+    this.addVehiclesForm.reset();
   }
   // Deleting Function
   removeData(vehicleData : number)
@@ -65,6 +67,15 @@ export class AddVehiclesComponent {
   // Updating Function
   updateData(vehicleData : number)
   {
-    
+    let temp:any[] = this.inputData.filter(data => data.id == vehicleData);
+    if(temp.length > 0)
+    {
+      this.addVehiclesForm.patchValue({
+        vehicleName   : temp[0].Vehiclename ,
+        ownerName     : temp[0].Ownername ,
+        DeliveryDate  : temp[0].DateofDelivery ,
+      })
+      this.display = true;
+    }
   }
 }
