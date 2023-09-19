@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup  , FormControl} from '@angular/forms';
+import { CreateServiceService } from '../VehicleServices/create-service.service';
 
 @Component({
   selector: 'app-add-vehicles',
@@ -7,7 +8,7 @@ import { FormGroup  , FormControl} from '@angular/forms';
   styleUrls: ['./add-vehicles.component.css']
 })
 export class AddVehiclesComponent {
-  constructor(){}
+  constructor(private VehiclesServices : CreateServiceService){}
   // Adding Vehicles Form Input Data
   addVehiclesForm = new FormGroup({
     vehicleImage : new FormControl() ,
@@ -43,6 +44,9 @@ export class AddVehiclesComponent {
       'Ownername'     : owner ,
       'DateofDelivery' : Date ,
     };
+    // Sending Data to Database using this function
+    this.VehiclesServices.onsubmit(allData).subscribe();
+    // End of Sending Data
     this.inputData.push(allData);
     this.counter ++ ;
     this.display = this.display = false;

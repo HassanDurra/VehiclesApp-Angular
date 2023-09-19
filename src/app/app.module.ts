@@ -9,6 +9,7 @@ import { CssLinksComponent } from './css-links/css-links.component';
 import { LoginComponent } from './login/login.component';
 import { NavigationBarComponent } from './navigation-bar/navigation-bar.component';
 import {ReactiveFormsModule} from '@angular/forms'
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,6 +20,7 @@ import {ReactiveFormsModule} from '@angular/forms'
 
   ],
   imports: [
+    HttpClientModule,
     ReactiveFormsModule,
     BrowserModule,
     RouterModule.forRoot([
