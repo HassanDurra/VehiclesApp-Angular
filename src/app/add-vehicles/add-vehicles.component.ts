@@ -27,9 +27,11 @@ export class AddVehiclesComponent implements OnInit{
   // Adding Vehicles Form Input Data
   addVehiclesForm = new FormGroup({
     vehicleImage : new FormControl() ,
+    vehicleId    : new FormControl() ,
     vehicleName  : new FormControl() ,
     ownerName    : new FormControl() ,
-    DeliveryDate : new FormControl()
+    DeliveryDate : new FormControl() ,
+ 
   });
   // Now Submit Function to Call the data
   // Getting Image Path To Show Images
@@ -48,20 +50,34 @@ export class AddVehiclesComponent implements OnInit{
     let name   = this.addVehiclesForm.controls.vehicleName.value;
     let owner  = this.addVehiclesForm.controls.ownerName.value;
     let Date   = this.addVehiclesForm.controls.DeliveryDate.value;
-    let allData = {
-      // 'Vehicleimage'  : this.imagePath ,
-      'Vehiclename'   : name ,
-      'Ownername'     : owner ,
-      'DateofDelivery' : Date ,
-    };
-    // Sending Data to Database using this function
-    this.VehiclesServices.onsubmit(allData).subscribe((response) => {
-      this.vehicleData = response;
-    });
-    // End of Sending Data
-    // Showing All Data After insert
-
-    this.counter ++ ;
+    let id     = this.addVehiclesForm.controls.vehicleId.value;
+    // will create a new data if there is no record
+    if(id == null)
+    {
+      let allData = {
+        // 'Vehicleimage'  : this.imagePath ,
+        'Vehiclename'    : name ,
+        'Ownername'      : owner ,
+        'DateofDelivery' : Date ,
+      };
+      // Sending Data to Database using this function
+      this.VehiclesServices.onsubmit(allData).subscribe((response) => {
+        this.vehicleData = response;
+      });
+    
+    }
+    // Will update the data if it finds the id
+    else{
+      let allData = {
+        'VehicleId'    : id ,
+        'VehicleName'  : name ,
+        'VehicleOwner' : owner ,
+        'VehicleDate'  : Date ,
+      }
+      this.VehiclesServices.onUpdate(allData).subscribe((response)=>{
+        this.vehicleData = response ;
+      });
+    }
     this.display = this.display = false;
     this.addVehiclesForm.reset();
   }
@@ -84,18 +100,18 @@ export class AddVehiclesComponent implements OnInit{
       this.vehicleData = response ;
     });
   }
-  // Updating Function
-  updateData(vehicleData : any)
+  // Fetching Specific Data
+  onEdit(vehicleId : number)
   {
-    let temp:any[] = this.vehicleData.filter(data => data.id == vehicleData);
-    if(temp.length > 0)
-    {
-      this.addVehiclesForm.patchValue({
-        vehicleName   : temp[0].Vehiclename ,
-        ownerName     : temp[0].Ownername ,
-        DeliveryDate  : temp[0].DateofDelivery ,
-      })
-      this.display = true;
-    }
+      this.VehiclesServices.onEdit(vehicleId).subscribe((response)=>{
+        this.addVehiclesForm.patchValue({
+          vehicleId    : response[0].id,
+          vehicleName  : response[0].name ,
+          ownerName    : response[0].ownername ,
+          DeliveryDate : response[0].dateofdelivery ,
+        })
+      });
+        this.display = true;
   }
+ 
 }

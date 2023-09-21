@@ -8,10 +8,11 @@
       </div>
       <form [formGroup]="addVehiclesForm" (ngSubmit)="onsubmit()" >
         <input type="file" (change)="onImageChange($event)" formControlName="vehicleImage" class="input-style" id="">
+        <input type="hidden" formControlName="vehicleId" class="input-style">
         <input type="text" formControlName="vehicleName" class="input-style" placeholder="Insert Vehicle Name">
         <input type="text" formControlName="ownerName" class="input-style" placeholder="Insert Owner Name">
         <input type="date" formControlName="DeliveryDate" id="" class="input-style">
-        <button type="submit" class="input-button">Add Vehicles Data</button>
+        <button type="submit" class="input-button">Save Changes</button>
       </form>
     </div>
   </div>
@@ -40,7 +41,7 @@
         <td>{{ vehicleDatas.name }}</td>
         <td>{{ vehicleDatas.ownername }}</td>
         <td>{{ vehicleDatas.dateofdelivery }}</td>
-        <td><button class=" btn deleteButton" (click)="onDelete(vehicleDatas.id)">Delete</button> <span style="color:grey"> | </span> <button class=" btn updateButton" (click)="updateData(vehicleDatas.id)">Update</button></td>
+        <td><button class=" btn deleteButton" (click)="onDelete(vehicleDatas.id)">Delete</button> <span style="color:grey"> | </span> <button class=" btn updateButton" (click)="onEdit(vehicleDatas.id)">Update</button></td>
       </tr>
 
      </tbody>
