@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component , OnInit } from '@angular/core';
 import { FormGroup  , FormControl} from '@angular/forms';
 import { CreateServiceService } from '../VehicleServices/create-service.service';
 
@@ -7,8 +7,23 @@ import { CreateServiceService } from '../VehicleServices/create-service.service'
   templateUrl: './add-vehicles.component.html',
   styleUrls: ['./add-vehicles.component.css']
 })
-export class AddVehiclesComponent {
+export class AddVehiclesComponent implements OnInit{
   constructor(private VehiclesServices : CreateServiceService){}
+  counter  = 1;
+  vehicleData : any [] = [];
+  imagePath = "" ;
+  display:boolean = false ;
+
+  ngOnInit(): void
+  {
+    this.LoadData();
+  }
+
+  LoadData():void{
+    this.VehiclesServices.fetchData().subscribe((response)=>{
+      this.vehicleData = response ;
+      console.log(this.vehicleData);
+  })};
   // Adding Vehicles Form Input Data
   addVehiclesForm = new FormGroup({
     vehicleImage : new FormControl() ,
@@ -17,20 +32,16 @@ export class AddVehiclesComponent {
     DeliveryDate : new FormControl()
   });
   // Now Submit Function to Call the data
-  counter  = 1;
-  inputData : any [] = [];
-  imagePath = "" ;
-  display:boolean = false ;
   // Getting Image Path To Show Images
   onImageChange(event : Event)
   {
-    const input = event.target as HTMLInputElement;
-    if(input.files && input.files.length > 0)
-    {
-      const file     =  input.files[0];
-      const Fullpath =  window.URL.createObjectURL(file);
-      this.imagePath = Fullpath;
-    }
+    // const input = event.target as HTMLInputElement;
+    // if(input.files && input.files.length > 0)
+    // {
+    //   const file     =  input.files[0];
+    //   const Fullpath =  window.URL.createObjectURL(file);
+    //   this.imagePath = Fullpath;
+    // }
   }
   // Submitting And Showing Images
   onsubmit(){
@@ -38,16 +49,18 @@ export class AddVehiclesComponent {
     let owner  = this.addVehiclesForm.controls.ownerName.value;
     let Date   = this.addVehiclesForm.controls.DeliveryDate.value;
     let allData = {
-      'id'            : this.counter ,
-      'Vehicleimage'  : this.imagePath ,
+      // 'Vehicleimage'  : this.imagePath ,
       'Vehiclename'   : name ,
       'Ownername'     : owner ,
       'DateofDelivery' : Date ,
     };
     // Sending Data to Database using this function
-    this.VehiclesServices.onsubmit(allData).subscribe();
+    this.VehiclesServices.onsubmit(allData).subscribe((response) => {
+      this.vehicleData = response;
+    });
     // End of Sending Data
-    this.inputData.push(allData);
+    // Showing All Data After insert
+
     this.counter ++ ;
     this.display = this.display = false;
     this.addVehiclesForm.reset();
@@ -64,14 +77,17 @@ export class AddVehiclesComponent {
     this.addVehiclesForm.reset();
   }
   // Deleting Function
-  removeData(vehicleData : number)
+  onDelete(vehicleData : number)
   {
-    this.inputData.splice(vehicleData , 1)
+    
+    this.VehiclesServices.onDelete(vehicleData).subscribe((response)=>{
+      this.vehicleData = response ;
+    });
   }
   // Updating Function
   updateData(vehicleData : number)
   {
-    let temp:any[] = this.inputData.filter(data => data.id == vehicleData);
+    let temp:any[] = this.vehicleData.filter(data => data.id == vehicleData);
     if(temp.length > 0)
     {
       this.addVehiclesForm.patchValue({
